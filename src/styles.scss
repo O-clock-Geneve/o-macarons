@@ -1,0 +1,46 @@
+@use "./styles/vars" as v;
+@use "./styles/reset";
+
+.app {
+  min-height: 100vh;
+
+  &--dark {
+    min-height: 100vh;
+    background-color: #222222;
+    color: rgb(231, 228, 228);
+    .header {
+      background-color: #222222;
+    }
+    .footer {
+      background-color: #222222;
+    }
+  }
+}
+
+.header {
+  background-color: v.$color-filling;
+  padding: 1rem;
+
+  &-title {
+    font-size: 2rem;
+    text-align: center;
+  }
+}
+
+.main {
+  padding: 1rem;
+}
+
+.darkmode {
+  border: none;
+  border-radius: 50%;
+  padding: 0.4rem;
+}
+
+.footer {
+  background-color: #ccc;
+  padding: 1rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}

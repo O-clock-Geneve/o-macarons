@@ -1,0 +1,9 @@
+.macaronBox {
+  // affiche les macarons en flex
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 2rem;
+  background-color: rgba(125, 23, 54, 0.6);
+}
