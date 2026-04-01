@@ -6,6 +6,7 @@ import data from "./data/macarons"
 import MacaronBox from "./macaronBox/MacaronBox"
 import { MacaronI } from "./@types/macaron"
 import Footer from "./footer/Footer"
+import AddMacaron from "./addMacaron/AddMacaron"
 
 // COMPOSANT : un composant est une fonction qui return du JSX
 // on met une majuscule au debut du nom de la fonction composant
@@ -15,12 +16,27 @@ function App() {
 
   // ici on peut definir des variables (bidons: qui ne sont pas réactives)
   // on a un tableau de string et on veut fabriquer un tableau de div pour notre JSX on va utiliser MAP
-  const macaronList: MacaronI[] = data
+  //const macaronList: MacaronI[] = data
+  // En utilisant mon formulaire je vais influer sur le tableau de macarons, et donc j'ai besoin de les stocker
+  // Dans un state
+  const [macaronList, setMacaronList] = useState<MacaronI[]>(data)
 
   //Je prépare mon state afin d'afficher / selectionner le Macaron choisi par l'utilisateur
   const [selectedMacaron, setSelecetMacaron] = useState<MacaronI>(
     macaronList[0],
   )
+
+  //Je crée une fonction qui permet d'ajouter un macaron à la liste
+  function addMacaronToList(newMacaron: Omit<MacaronI, "id">) {
+    // Je crée une copie de mon tableau de macaron (principe d'immutabilité)
+    const newMacaronList: MacaronI[] = [
+      ...macaronList,
+      { id: macaronList.length + 1, ...newMacaron },
+    ]
+    setMacaronList(newMacaronList)
+  }
+
+  console.log(macaronList)
 
   return (
     <div className={isDarkMode ? "app--dark" : "app"}>
@@ -55,6 +71,7 @@ function App() {
         <div>Please select your favorite Macaron : </div>
         <p>Your favorite Macaron is : macaron {selectedMacaron.flavour}</p>
       </main>
+      <AddMacaron addMacaronToList={addMacaronToList} />
       <Footer />
     </div>
   )
