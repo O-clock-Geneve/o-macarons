@@ -1,3 +1,4 @@
+import { Link } from "react-router"
 import { MacaronI } from "../@types/macaron"
 import "./Macaron.scss"
 
@@ -21,6 +22,7 @@ export default function Macaron({ macaron, onClick }: IProps) {
           style={{ backgroundColor: macaron.color }}
         />
       </button>
+      <Link to={`/macarons/${macaron.flavour}`}>Plus d'infos</Link>
     </li>
   )
 }

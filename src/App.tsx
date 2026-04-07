@@ -1,11 +1,12 @@
 // useState est une fonction speciale importée de React, c'est un hook c'est à dire qu'elle n'a le droit d'etre utilisée que dans des composants (fonction qui return du JSX) et elle ne doit etre executée que à la racine du composant (pas dans des boucles, des conditions, des sous fonctions)
 import { useEffect, useState } from "react"
-import Macaron from "./macaron/Macaron"
 import Header from "./header/Header"
-import MacaronBox from "./macaronBox/MacaronBox"
 import { MacaronI } from "./@types/macaron"
 import Footer from "./footer/Footer"
 import AddMacaron from "./addMacaron/AddMacaron"
+import { Route, Routes } from "react-router"
+import Home from "./pages/home/Home"
+import MacaronPage from "./pages/macaronPage/MacaronPage"
 
 // COMPOSANT : un composant est une fonction qui return du JSX
 // on met une majuscule au debut du nom de la fonction composant
@@ -64,11 +65,6 @@ function App() {
     }
   }, [])
 
-  //Je prépare mon state afin d'afficher / selectionner le Macaron choisi par l'utilisateur
-  const [selectedMacaron, setSelecetMacaron] = useState<MacaronI | undefined>(
-    macaronList[0] || undefined,
-  )
-
   //Je crée une fonction qui permet d'ajouter un macaron à la liste
   function addMacaronToList(newMacaron: Omit<MacaronI, "id">) {
     // Je crée une copie de mon tableau de macaron (principe d'immutabilité)
@@ -93,36 +89,15 @@ function App() {
         <p>{fetchError}</p>
       ) : (
         <main className="main">
-          {macaronList.length > 0 ? (
-            <MacaronBox>
-              {
-                // avec map on fabrique un tableau d'element div JSX
-                macaronList.map((macaron) => {
-                  // on doit return la ligne du tableau généré par map: un element JSX div
-                  // on est obligé d'ajouter une prop "key" aux elements quand ils sont dan sun tableau pour que React puisse les identifier (attention on ne met pas l'index du tableau en key)
-                  return (
-                    <Macaron
-                      macaron={macaron}
-                      onClick={() => setSelecetMacaron(macaron)}
-                    />
-                  )
-                })
-              }
-            </MacaronBox>
-          ) : (
-            <p>
-              Pas de macarons disponibles, revenez plus tard. Ou achetez des
-              cookies c'est moins cher
-            </p>
-          )}
-
-          <div>Please select your favorite Macaron : </div>
-          <p>
-            Your favorite Macaron is :{" "}
-            {selectedMacaron
-              ? `macaron ${selectedMacaron.flavour}`
-              : "Aucun Macaron selectionné"}
-          </p>
+          {/* Je crée mes routes */}
+          <Routes>
+            <Route path="/" element={<Home macaronList={macaronList} />} />
+            <Route
+              path="/macarons/:flavour"
+              element={<MacaronPage macaronList={macaronList} />}
+            />
+            <Route path="*" element={<h1>404 : Missing Macaron</h1>} />
+          </Routes>
         </main>
       )}
       <AddMacaron addMacaronToList={addMacaronToList} />
